@@ -1,0 +1,23 @@
+# Continuous checks for Truefit. NOT ACTIVE until this folder is in a git repository on GitHub (there is none yet; nothing here was pushed).
+# It runs only the suites that need no screen: engine tests, the app's typecheck, lint (unused code), node suites and component tests (with the accessibility checks).
+# Left out on purpose: the real-window suites (`npm run e2e`, `e2e:quality`, `e2e:packaged`, `e2e:release`). They open an Electron window and need a logged-in desktop session, which
+# a hosted runner does not give reliably; run them on the Mac before a release (see docs/RELEASE-CHECKLIST.md).
+# tests/build.test.ts needs a Chrome-based browser (GitHub's macOS runners have Chrome). If a runner ever lacks it, set CVAPP_SKIP_BUILD_TEST=1 and rely on the real-window Build CV check instead.
+name: checks
+on:
+  push:
+  pull_request:
+jobs:
+  headless:
+    runs-on: macos-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 24 }
+      - name: Engine tests
+        working-directory: engine
+        run: npm ci && npm test
+      - name: App typecheck, lint and tests
+        working-directory: app
+        run: npm ci && npm run typecheck && npm run lint && npm test

@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "identity": { "name": "Sam Okafor", "email": "sam.okafor@example.com", "phone": "07700 900456", "city": "Bristol", "country": "UK" },
+  "roles": [
+    {
+      "id": "westbrook", "title": "Secondary Maths Teacher", "company": "Westbrook Academy", "location": "Bristol, UK",
+      "start": { "y": 2016, "m": 9 }, "end": { "y": 2024, "m": 7 }, "status": "verified",
+      "bullets": [
+        { "id": "sw1", "tags": ["training", "data"], "text": "Used termly assessment data to plan interventions for 30 pupils, raising the group’s pass rate from 54% to 71%.", "status": "verified" },
+        { "id": "sw2", "tags": ["training", "mentoring"], "text": "Mentored 3 trainee teachers through their first year, running weekly observation and feedback sessions.", "status": "verified" },
+        { "id": "sw3", "tags": ["ops", "planning"], "text": "Planned and delivered 5 lessons a day to classes of up to 32, adapting materials for mixed abilities.", "status": "verified" }
+      ]
+    },
+    {
+      "id": "harbour", "title": "Volunteer Coordinator", "company": "Harbour Food Bank", "location": "Bristol, UK",
+      "start": { "y": 2023, "m": 1 }, "end": "present", "status": "verified",
+      "bullets": [
+        { "id": "sh1", "tags": ["ops", "coordination"], "text": "Scheduled a rota of 25 volunteers across 3 weekly sessions in a shared spreadsheet.", "status": "verified" }
+      ]
+    }
+  ],
+  "skills": [
+    { "name": "Google Workspace", "status": "verified" },
+    { "name": "Spreadsheet analysis", "status": "verified" },
+    { "name": "Lesson planning", "status": "verified" },
+    { "name": "Stakeholder communication", "status": "draft" }
+  ],
+  "education": [ { "id": "e1", "text": "PGCE Secondary Mathematics, University of Bristol, 2015 - 2016", "status": "verified" } ],
+  "focusTypes": [ { "id": 1, "name": "Learning and development", "headline": "Learning and Development Coordinator", "leadTags": ["training", "mentoring"], "status": "verified" } ],
+  "doNotUse": [ { "id": "d1", "kind": "gap", "text": "instructional design software", "note": "not used yet" } ],
+  "rules": {
+    "salaryFloor": { "amount": 31000, "currency": "GBP" },
+    "location": { "current": "Bristol", "targets": ["Bristol", "remote UK"], "workModes": ["hybrid", "remote", "onsite"], "cvLocationLines": ["Bristol, UK"] },
+    "seniority": { "levels": ["entry", "mid"], "avoid": ["head of"] },
+    "rightToWork": { "statement": "Irish citizen (Common Travel Area)", "needsSponsorship": false },
+    "avoidRoles": []
+  }
+}

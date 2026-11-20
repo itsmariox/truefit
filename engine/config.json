@@ -1,0 +1,24 @@
+{
+  "models": {
+    "analyst": "claude-sonnet-5-5",
+    "writer": "claude-sonnet-5-5",
+    "checker": "claude-sonnet-5-5",
+    "coach": "claude-sonnet-5-5"
+  },
+  "openaiModels": {
+    "analyst": "gpt-6.2-sol",
+    "writer": "gpt-6.2-sol",
+    "checker": "gpt-6.2-sol",
+    "coach": "gpt-6.2-sol"
+  },
+  "agentTimeoutSeconds": 300,
+  "researchTimeoutSeconds": 420,
+  "maxAdChars": 30000,
+  "writerMode": "choose-and-order",
+  "tone": "friendly",
+  "accent": "oxford",
+  "showRightToWork": true,
+  "resumeProfile": "snapshot",
+  "radarDay": "Mon",
+  "radarTime": "09:00"
+}

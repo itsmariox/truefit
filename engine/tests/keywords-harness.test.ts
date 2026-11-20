@@ -1,0 +1,44 @@
+// The Test 1 harness (evals/reword-keywords.ts) on a fake Claude: wiring, scoring, retry handling and the pass bar. No Claude call. Needs Chrome.
+import { mkdtempSync, readFileSync, rmSync, readdirSync } from "node:fs";
+import os from "node:os";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+const dir = path.dirname(fileURLToPath(import.meta.url));
+const { runTest1, summarise } = await import("../evals/reword-keywords.ts");
+const { findChrome, ChromeCliRenderer, loadFonts } = await import("../src/cv/render.ts");
+const { profileToPersona } = await import("../src/profile.ts");
+const { buildSelection, SUMMARY } = await import("./helpers.ts");
+let failures = 0;
+const ok = (n: string, c: boolean) => { if (!c) failures++; console.log((c ? "PASS " : "FAIL ") + n); };
+const mk = (mode: string, percent: number | undefined, okk = true) => ({ mode, rep: 1, ok: okk, retried: false, problems: [], percent }) as never;
+const S = (runsPerAd: [number, number][]) => summarise(runsPerAd.map(([b, r], i) => ({ ad: `a${i}`, runs: [mk("choose-and-order", b), mk("reword", r)] })));
+ok("pass bar: mean gain 5 or more, at most one ad lower, at least 5 usable ads passes", S([[50, 57], [50, 57], [50, 57], [50, 57], [50, 49]]).passes);
+ok("pass bar: a mean gain under 5 fails", !S([[50, 52], [50, 52], [50, 52], [50, 52], [50, 52]]).passes);
+ok("pass bar: two ads lower fails even with a high mean", !S([[50, 70], [50, 70], [50, 70], [50, 45], [50, 45]]).passes);
+ok("pass bar: fewer than 5 usable ads fails (not enough evidence)", !S([[50, 70], [50, 70], [50, 70]]).passes);
+ok("failed reword runs are counted and not averaged in", (() => { const s = summarise([{ ad: "x", runs: [mk("choose-and-order", 50), mk("reword", 90, false), mk("reword", 52)] }]); return s.rows[0].reword === 52 && s.rewordRunsFailed === 1; })());
+if (!findChrome()) { console.log("SKIP harness run: needs Chrome"); process.exit(failures ? 1 : 0); }
+const priya = JSON.parse(readFileSync(path.join(dir, "fixtures", "profile-priya.json"), "utf8"));
+const NOW = new Date("2026-11-16T12:00:00Z"), ctx = profileToPersona(priya, NOW);
+const R = "Created a weekly Google Analytics report for 4 store managers, replacing a manual 3-hour spreadsheet task.";
+let calls: string[] = [];
+const query = (args: { prompt: string; options: Record<string, any> }) => {
+  const system = String(args.options.systemPrompt), reword = /Rewording rules/.test(system);
+  const role = /# Fit analysis/.test(system) ? "analyst" : "writer"; calls.push(role + (role === "writer" ? ":" + (reword ? "reword" : "base") : ""));
+  const analysis = { company: "X", role: "Y", location: "Leeds", work_mode: "hybrid", salary_text: null, salary_min_gbp: null, seniority: "mid", years_required: 2, experience: { years: 8, basis: "dated roles" }, requirements: [], constraint_checks: [], focus_id: 1, focus_note: "", fit_percent: 70, fit_note: "", verdict: "apply", strengths: [], gaps: [], unverified_needed: [], injection_suspected: false, summary: "" };
+  const sel = { ...buildSelection(ctx, 1, SUMMARY), ...(reword ? { rewrites: [{ id: "pn2", text: R }] } : {}) };
+  const answer = role === "analyst" ? analysis : sel;
+  return (async function* () { yield { type: "system", subtype: "init", tools: ["StructuredOutput"], mcp_servers: [], plugins: [], skills: [], cwd: args.options.cwd, permissionMode: "default" }; yield { type: "result", subtype: "success", is_error: false, structured_output: answer, total_cost_usd: 0, modelUsage: {}, errors: [] }; })();
+};
+const out = mkdtempSync(path.join(os.tmpdir(), "cvapp-kwh-"));
+const cfg = { models: { analyst: "m", writer: "m", checker: "m", coach: "m" }, agentTimeoutSeconds: 30, researchTimeoutSeconds: 30, maxAdChars: 30000 };
+const lines: string[] = [];
+const { results, summary } = await runTest1({ query: query as never, renderer: new ChromeCliRenderer(), fonts: await loadFonts(), profile: priya, config: cfg, outDir: out, reps: 1, now: NOW, log: (s) => lines.push(s) });
+ok("harness: 6 ads, one Analyst call each and one Writer call per mode and rep (6 + 12 calls), nothing else", results.length === 6 && calls.filter((c) => c === "analyst").length === 6 && calls.filter((c) => c.startsWith("writer")).length === 12 && calls.length === 18);
+ok("harness: each Writer call used its own mode's skill", calls.filter((c) => c === "writer:reword").length === 6 && calls.filter((c) => c === "writer:base").length === 6);
+ok("harness: every run is valid and scored, reworded runs record the original and reworded text", results.every((r) => r.runs.length === 2 && r.runs.every((x) => x.ok && typeof x.percent === "number")) && results.every((r) => r.runs.find((x) => x.mode === "reword")!.rewrites![0].reworded === R && r.runs.find((x) => x.mode === "choose-and-order")!.rewrites!.length === 0));
+ok("harness: results.json and report.md are written, and the report states the verdict against the bar", readdirSync(out).includes("results.json") && /Result against the bar: (PASS|FAIL)/.test(readFileSync(path.join(out, "report.md"), "utf8")) && /ORIGINAL: /.test(readFileSync(path.join(out, "report.md"), "utf8")));
+ok("harness: with this fake (same bullets, one reworded) the keyword difference is small and the summary is a number", Number.isFinite(summary.meanGain) && summary.usableAds === 6);
+rmSync(out, { recursive: true, force: true });
+console.log(failures === 0 ? "\nall keywords-harness tests passed" : `\n${failures} keywords-harness test(s) FAILED`);
+process.exit(failures === 0 ? 0 : 1);

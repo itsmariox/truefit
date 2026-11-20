@@ -1,0 +1,20 @@
+{
+  "name": "cv-app-engine",
+  "version": "1.0.0",
+  "description": "Generic engine for the CV app: honest fit verdicts and fact-checked, ATS-friendly CVs from a verified profile.",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "test": "node tests/personal-data.test.ts && node tests/profile-v2.test.ts && node tests/profile-store-v2.test.ts && node tests/profile-import-v2.test.ts && node tests/profile-review.test.ts && node tests/adgate.test.ts && node tests/profile-extras.test.ts && node tests/profile-patch.test.ts && node tests/profile-import.test.ts && node tests/cv-source.test.ts && node tests/checks.test.ts && node tests/links.test.ts && node tests/radar.test.ts && node tests/telegram.test.ts && node tests/config.test.ts && node tests/gateway.test.ts && node tests/stress.test.ts && node tests/persona-fixes.test.ts && node tests/profile.test.ts && node tests/selection.test.ts && node tests/render.test.ts && node tests/agents.test.ts && node tests/provider.test.ts && node tests/openai-provider.test.ts && node tests/openai-plan.test.ts && node tests/openai-signin.test.ts && node tests/openai-access.test.ts && node tests/job-service.test.ts && node tests/live-gate.test.ts && node tests/pipeline.test.ts && node tests/e2e.test.ts && node tests/reword.test.ts && node tests/keywords.test.ts && node tests/keywords-harness.test.ts && node tests/db.test.ts && node tests/migrate.test.ts && node tests/store.test.ts && node tests/jobs-index.test.ts && node tests/backup.test.ts && node tests/export.test.ts && node tests/delete.test.ts && node tests/store-e2e.test.ts && node tests/paths.test.ts && node tests/store-fixes.test.ts && node tests/access.test.ts && node tests/signin.test.ts && node tests/ledger.test.ts && node tests/messages.test.ts && node tests/runtime.test.ts && node tests/skills.test.ts && node tests/glyphs.test.ts && node tests/ats.test.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@anthropic-ai/claude-agent-sdk": "^0.3.322",
+    "fflate": "0.8.3",
+    "pdfjs-dist": "6.5.438"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.6",
+    "typescript": "^7.0.2"
+  }
+}

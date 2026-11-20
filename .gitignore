@@ -1,0 +1,23 @@
+# dependencies and build output
+node_modules/
+dist/
+out/
+.DS_Store
+
+# secrets
+.env
+.env.*
+
+# personal data, local only (remove this line to track it)
+private/
+
+# local tool caches (contain machine paths)
+app/.impeccable/hook.cache.json
+
+# internal planning docs, kept local (contain personal context)
+HANDOFF.md
+ISSUES.md
+PHASE*.md
+SPEC.md
+SPEC-v1-superseded.md
+prd/

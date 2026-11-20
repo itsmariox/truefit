@@ -1,0 +1,14 @@
+import { adKeywords, coverage, gain } from "../src/eval/keywords.ts";
+let failures = 0;
+const ok = (n: string, c: boolean) => { if (!c) failures++; console.log((c ? "PASS " : "FAIL ") + n); };
+const ad = "We need a marketing executive who builds reporting dashboards in HubSpot and SQL. Reporting to stakeholders is central; you will manage stakeholder reporting weekly and run email campaigns. Campaigns matter.";
+const kw = adKeywords(ad);
+ok("named terms are picked up from the ad", kw.named.includes("hubspot") && kw.named.includes("sql"));
+ok("words the ad repeats are keywords, one-off and filler words are not", kw.words.includes("reporting") && kw.words.includes("campaigns") && !kw.words.includes("central") && !kw.words.includes("will"));
+const a = coverage("Built weekly summaries in HubSpot and SQL for stakeholders.", kw), b = coverage("Built weekly reporting for stakeholders in HubSpot and SQL; ran email campaigns.", kw);
+ok("coverage counts named terms and stemmed words (a CV without the word misses it, one with it hits)", a.namedHit.length === 2 && !a.wordsHit.includes("reporting") && b.wordsHit.includes("reporting") && b.wordsHit.includes("campaigns"));
+const g = gain(a, b);
+ok("gain lists the keywords added by the reworded CV, the ones lost, and the point difference", g.added.includes("reporting") && g.lost.length === 0 && g.points === b.percent - a.percent && g.points > 0);
+ok("an empty ad gives zero, not NaN", coverage("anything", adKeywords("")).percent === 0);
+console.log(failures === 0 ? "\nall keywords tests passed" : `\n${failures} keywords test(s) FAILED`);
+process.exit(failures === 0 ? 0 : 1);

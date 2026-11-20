@@ -1,0 +1,31 @@
+// Phase 2a: the database seam (src/store/db.ts) on Node's built-in SQLite. The same behaviour was checked inside Electron 45.3.3 (see PHASE2.md).
+import { mkdtempSync, readFileSync, rmSync, writeFileSync, existsSync } from "node:fs";
+import os from "node:os";
+import path from "node:path";
+const { openDb } = await import("../src/store/db.ts");
+let failures = 0;
+const ok = (n: string, c: boolean) => { if (!c) failures++; console.log((c ? "PASS " : "FAIL ") + n); };
+const tmp = mkdtempSync(path.join(os.tmpdir(), "cvapp-db-")), f = path.join(tmp, "t.db");
+let db = openDb(f);
+db.exec("CREATE TABLE p(id INTEGER PRIMARY KEY, name TEXT NOT NULL UNIQUE, n INTEGER); CREATE TABLE c(id INTEGER PRIMARY KEY, pid INTEGER NOT NULL REFERENCES p(id))");
+const r = db.run("INSERT INTO p(name, n) VALUES(?, ?)", "a", 1);
+ok("run returns changes and the new row id; get and all return plain objects", r.changes === 1 && r.lastId === 1 && db.get<{ name: string }>("SELECT name FROM p")!.name === "a" && Object.getPrototypeOf(db.all("SELECT * FROM p")[0]) === Object.prototype && db.get("SELECT * FROM p WHERE id = 99") === undefined);
+ok("a transaction that throws is rolled back completely; one that succeeds is kept", (() => { try { db.transaction(() => { db.run("INSERT INTO p(name) VALUES('b')"); throw new Error("boom"); }); } catch { /* expected */ } const afterFail = db.all("SELECT * FROM p").length; db.transaction(() => { db.run("INSERT INTO p(name) VALUES('c')"); }); return afterFail === 1 && db.all("SELECT * FROM p").length === 2; })());
+ok("a nested transaction is refused (and the outer one still rolls back cleanly)", (() => { try { db.transaction(() => { db.run("INSERT INTO p(name) VALUES('d')"); db.transaction(() => 1); }); } catch (e) { return /nested/.test((e as Error).message) && db.all("SELECT * FROM p").length === 2; } return false; })());
+ok("constraints are enforced: unique names and foreign keys refuse bad rows", (() => { let a = false, b = false; try { db.run("INSERT INTO p(name) VALUES('a')"); } catch { a = true; } try { db.run("INSERT INTO c(pid) VALUES(99)"); } catch { b = true; } return a && b; })());
+ok("values keep their types: text with unicode and quotes, big numbers, null and bytes", (() => { db.run("INSERT INTO p(name, n) VALUES(?, ?)", "O'Brien £15,000 – “ok” 😀", 2 ** 40); const x = db.get<{ name: string; n: number }>("SELECT * FROM p WHERE n = ?", 2 ** 40)!; db.exec("CREATE TABLE z(b BLOB, t TEXT)"); db.run("INSERT INTO z VALUES(?, ?)", new Uint8Array([1, 2, 3]), null); const z = db.get<{ b: Uint8Array; t: null }>("SELECT * FROM z")!; return x.name === "O'Brien £15,000 – “ok” 😀" && x.n === 2 ** 40 && z.t === null && z.b.length === 3; })());
+ok("the format version stamp starts at 0, can be set and survives reopening", (() => { const v0 = db.version(); db.setVersion(3); db.close(); db = openDb(f); return v0 === 0 && db.version() === 3; })());
+ok("a bad version is refused", (() => { try { db.setVersion(-1); return false; } catch { return true; } })());
+ok("a sound file reports no integrity problems; the file uses write-ahead logging", db.integrity().length === 0 && String((db.get("PRAGMA journal_mode") as { journal_mode: string }).journal_mode) === "wal");
+db.close();
+// damage: overwrite the middle of the file with garbage, and a file that is not a database at all
+const bytes = readFileSync(f); for (let i = 100; i < Math.min(bytes.length, 900); i++) bytes[i] = 0xff; writeFileSync(f, bytes);
+ok("a damaged database file is DETECTED (opening or integrity check reports it), never silently trusted", (() => { try { const d = openDb(f); const probs = d.integrity(); let readFailed = false; try { d.all("SELECT * FROM p"); } catch { readFailed = true; } d.close(); return probs.length > 0 || readFailed; } catch { return true; } })());
+const junk = path.join(tmp, "junk.db"); writeFileSync(junk, "this is not a database at all, just text. ".repeat(50));
+ok("a file that is not a database at all is detected too", (() => { try { const d = openDb(junk); const p = d.integrity(); d.close(); return p.length > 0; } catch { return true; } })());
+ok("an in-memory database works for tests", (() => { const m = openDb(":memory:"); m.exec("CREATE TABLE q(a)"); m.run("INSERT INTO q VALUES(1)"); const n = m.all("SELECT * FROM q").length; m.close(); return n === 1; })());
+ok("full-text search is available (History search can use it)", (() => { const m = openDb(":memory:"); m.exec("CREATE VIRTUAL TABLE h USING fts5(company, role)"); m.run("INSERT INTO h VALUES(?, ?)", "Acme Retail", "Marketing Executive"); const n = m.all("SELECT * FROM h WHERE h MATCH ?", "marketing").length; m.close(); return n === 1; })());
+rmSync(tmp, { recursive: true, force: true });
+ok("the temp folder is cleaned up", !existsSync(tmp));
+console.log(failures === 0 ? "\nall db tests passed" : `\n${failures} db test(s) FAILED`);
+process.exit(failures === 0 ? 0 : 1);

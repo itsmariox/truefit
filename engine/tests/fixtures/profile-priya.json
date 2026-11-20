@@ -1,0 +1,277 @@
+{
+  "schemaVersion": 1,
+  "identity": {
+    "name": "Priya Nair",
+    "email": "priya.nair@example.com",
+    "phone": "07700 900123",
+    "linkedin": "linkedin.com/in/priya-nair-example",
+    "city": "Leeds",
+    "country": "UK"
+  },
+  "roles": [
+    {
+      "id": "northfield",
+      "title": "Marketing Coordinator",
+      "company": "Northfield Retail",
+      "location": "Leeds, UK",
+      "start": {
+        "y": 2021,
+        "m": 3
+      },
+      "end": "present",
+      "status": "verified",
+      "bullets": [
+        {
+          "id": "pn1",
+          "tags": [
+            "email",
+            "growth"
+          ],
+          "text": "Grew the monthly newsletter list from 1,200 to 3,600 subscribers in 12 months by adding a gift-card sign-up offer.",
+          "status": "verified"
+        },
+        {
+          "id": "pn2",
+          "tags": [
+            "analytics",
+            "reporting"
+          ],
+          "text": "Built a weekly Google Analytics report for 4 store managers, replacing a manual 3-hour spreadsheet task.",
+          "status": "verified"
+        },
+        {
+          "id": "pn3",
+          "tags": [
+            "events",
+            "ops"
+          ],
+          "text": "Planned 6 in-store promotion events a year with a £15,000 budget, finishing every one within 5% of budget.",
+          "status": "verified"
+        },
+        {
+          "id": "pn4",
+          "tags": [
+            "content",
+            "social"
+          ],
+          "text": "Wrote and scheduled 12 social posts a week across Instagram & Facebook, lifting engagement by 22%.",
+          "status": "verified"
+        },
+        {
+          "id": "pn5",
+          "tags": [
+            "growth"
+          ],
+          "text": "CANARY-DRAFT-BULLET reached 9137 customers and won an award.",
+          "status": "draft"
+        }
+      ],
+      "story": {
+        "text": "Situation: store managers lacked sales insight. Action: I built the weekly report and trained them to use it. Result: all 4 managers adjusted promotions each week.",
+        "status": "verified"
+      }
+    },
+    {
+      "id": "brightside",
+      "title": "Marketing Assistant",
+      "company": "Brightside Print",
+      "location": "Bradford, UK",
+      "start": {
+        "y": 2018,
+        "m": 9
+      },
+      "end": {
+        "y": 2021,
+        "m": 2
+      },
+      "status": "verified",
+      "bullets": [
+        {
+          "id": "pb1",
+          "tags": [
+            "content"
+          ],
+          "text": "Designed 30+ customer flyers and email templates in Canva, cutting turnaround from 3 days to 1.",
+          "status": "verified"
+        },
+        {
+          "id": "pb2",
+          "tags": [
+            "ops"
+          ],
+          "text": "Kept the customer contact database for 800 accounts accurate and ready for quarterly campaigns.",
+          "status": "verified"
+        },
+        {
+          "id": "pb3",
+          "tags": [
+            "customer"
+          ],
+          "text": "Handled customers’ questions by phone and email, resolving most without escalation.",
+          "status": "verified"
+        }
+      ]
+    },
+    {
+      "id": "draftco",
+      "title": "CANARY-DRAFT-ROLE",
+      "company": "Draftco",
+      "location": "Leeds, UK",
+      "start": {
+        "y": 2017,
+        "m": 6
+      },
+      "end": {
+        "y": 2017,
+        "m": 8
+      },
+      "status": "draft",
+      "bullets": [
+        {
+          "id": "pd1",
+          "tags": [
+            "x"
+          ],
+          "text": "CANARY-ROLE-BULLET handled 7741 tickets.",
+          "status": "verified"
+        }
+      ]
+    }
+  ],
+  "skills": [
+    {
+      "name": "Mailchimp",
+      "status": "verified",
+      "group": "tools"
+    },
+    {
+      "name": "Google Analytics",
+      "status": "verified",
+      "group": "tools"
+    },
+    {
+      "name": "Canva",
+      "status": "verified",
+      "group": "tools"
+    },
+    {
+      "name": "Excel",
+      "status": "verified",
+      "group": "tools"
+    },
+    {
+      "name": "CANARY-DRAFT-SKILL",
+      "status": "draft"
+    }
+  ],
+  "education": [
+    {
+      "id": "e1",
+      "text": "BA Business Management, University of Leeds, 2014 - 2017",
+      "status": "verified"
+    },
+    {
+      "id": "e2",
+      "text": "CANARY-DRAFT-EDU",
+      "status": "draft"
+    }
+  ],
+  "focusTypes": [
+    {
+      "id": 1,
+      "name": "Marketing coordination",
+      "headline": "Marketing Coordinator",
+      "leadTags": [
+        "events",
+        "ops",
+        "analytics"
+      ],
+      "status": "verified"
+    },
+    {
+      "id": 2,
+      "name": "Content and email",
+      "headline": "Content and Email Marketer",
+      "leadTags": [
+        "email",
+        "content",
+        "growth"
+      ],
+      "status": "verified"
+    },
+    {
+      "id": 3,
+      "name": "Draft focus",
+      "headline": "CANARY-DRAFT-HEADLINE",
+      "leadTags": [
+        "x"
+      ],
+      "status": "draft"
+    }
+  ],
+  "doNotUse": [
+    {
+      "id": "d1",
+      "kind": "phrase",
+      "text": "Head of Marketing",
+      "note": "never claimed"
+    },
+    {
+      "id": "d2",
+      "kind": "phrase",
+      "text": "CANARY-FORBIDDEN-PHRASE",
+      "note": "retired claim"
+    },
+    {
+      "id": "d3",
+      "kind": "skill",
+      "text": "Photoshop",
+      "note": "not used for years"
+    },
+    {
+      "id": "d4",
+      "kind": "gap",
+      "text": "paid social advertising",
+      "note": "no hands-on experience"
+    }
+  ],
+  "rules": {
+    "salaryFloor": {
+      "amount": 28500,
+      "currency": "GBP"
+    },
+    "location": {
+      "current": "Leeds",
+      "targets": [
+        "Leeds",
+        "Manchester",
+        "remote UK"
+      ],
+      "workModes": [
+        "hybrid",
+        "remote"
+      ],
+      "cvLocationLines": [
+        "Leeds, UK"
+      ]
+    },
+    "seniority": {
+      "levels": [
+        "entry",
+        "mid"
+      ],
+      "avoid": [
+        "director",
+        "head of"
+      ]
+    },
+    "rightToWork": {
+      "statement": "British citizen",
+      "needsSponsorship": false
+    },
+    "avoidRoles": [
+      "door-to-door sales"
+    ],
+    "availability": "Available with one month notice"
+  }
+}
