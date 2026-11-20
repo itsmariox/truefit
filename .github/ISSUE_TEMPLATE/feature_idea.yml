@@ -1,0 +1,27 @@
+name: Feature idea
+description: Suggest something Truefit could do
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: What are you trying to do?
+      description: The job-hunt problem first, not the solution.
+    validations:
+      required: true
+  - type: textarea
+    id: idea
+    attributes:
+      label: What would you like Truefit to do?
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: What do you do today instead?
+  - type: checkboxes
+    id: honesty
+    attributes:
+      label: Fit with the project
+      options:
+        - label: This does not require inventing facts about the user or sending data anywhere the user has not chosen.
