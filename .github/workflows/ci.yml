@@ -1,12 +1,20 @@
-# Continuous checks for Truefit. NOT ACTIVE until this folder is in a git repository on GitHub (there is none yet; nothing here was pushed).
-# It runs only the suites that need no screen: engine tests, the app's typecheck, lint (unused code), node suites and component tests (with the accessibility checks).
-# Left out on purpose: the real-window suites (`npm run e2e`, `e2e:quality`, `e2e:packaged`, `e2e:release`). They open an Electron window and need a logged-in desktop session, which
-# a hosted runner does not give reliably; run them on the Mac before a release (see docs/RELEASE-CHECKLIST.md).
-# tests/build.test.ts needs a Chrome-based browser (GitHub's macOS runners have Chrome). If a runner ever lacks it, set CVAPP_SKIP_BUILD_TEST=1 and rely on the real-window Build CV check instead.
+# Continuous checks for Truefit. Runs on pull requests and on pushes to main. Needs no secrets (it only uses the automatic, read-only GITHUB_TOKEN).
+# It runs only the suites that need no screen: engine tests, then the app's type check, lint and tests (node suites and component tests with the accessibility checks).
+# Left out on purpose: the real-window suites (`npm run e2e`, `e2e:quality`, `e2e:packaged`, `e2e:release`). They open an Electron window and need a logged-in desktop
+# session, which a hosted runner does not give reliably; run them on a Mac before a release (see docs/RELEASE-CHECKLIST.md).
+# Runner: macOS, because that is the only platform the suite has been run on. The tests look for Chrome at macOS paths (engine/src/cv/render.ts) and the secret-store
+# and voice tests are written for macOS; GitHub's macOS runners ship Chrome. Nobody has tried Linux, so it is not claimed to work.
+# Order matters: the app type check also reads the engine sources, which import packages installed in engine/node_modules, so the engine is installed first.
 name: checks
 on:
   push:
+    branches: [main]
   pull_request:
+permissions:
+  contents: read
+concurrency:
+  group: checks-${{ github.ref }}
+  cancel-in-progress: true
 jobs:
   headless:
     runs-on: macos-latest
@@ -14,10 +22,28 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
-        with: { node-version: 24 }
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: |
+            engine/package-lock.json
+            app/package-lock.json
       - name: Engine tests
         working-directory: engine
         run: npm ci && npm test
-      - name: App typecheck, lint and tests
+      - name: App type check, lint and tests
         working-directory: app
-        run: npm ci && npm run typecheck && npm run lint && npm test
+        run: npm ci && npm run check
+  secret-scan:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      # Config: .gitleaks.toml (default rules plus an allowlist for the obviously fake keys in the tests).
+      # Note: gitleaks-action is free for personal accounts; a repository owned by an organisation needs a GITLEAKS_LICENSE secret, which would make this job fail until added.
+      - uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITLEAKS_CONFIG: .gitleaks.toml
