@@ -1,0 +1,45 @@
+name: Bug report
+description: Something does not work as it should
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting. Please use fictional or redacted data: no real CV text, keys, tokens or job details you would not post publicly.
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened?
+      description: What you did, what you expected, what you saw instead.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Truefit version
+      placeholder: e.g. the version in the DMG file name
+    validations:
+      required: true
+  - type: input
+    id: macos
+    attributes:
+      label: macOS version and Mac
+      placeholder: e.g. macOS version, Apple silicon chip
+    validations:
+      required: true
+  - type: dropdown
+    id: service
+    attributes:
+      label: AI service in use
+      options: [Claude subscription, Anthropic API key, ChatGPT plan, OpenAI API key, Not sure or not relevant]
+  - type: textarea
+    id: extra
+    attributes:
+      label: Anything else
+      description: Screenshots with personal details blurred are welcome.
