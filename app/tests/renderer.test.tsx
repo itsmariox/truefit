@@ -215,7 +215,8 @@ describe("notification banners (the stand-in for macOS notifications)", () => {
       render(<App bridge={createMockBridge("jobs")} />);
       fireEvent.change(await screen.findByLabelText("Job ad or link"), { target: { value: "A marketing role at Acme, another new text." } }); fireEvent.click(screen.getByRole("button", { name: NEW_JOB.send }));
       await screen.findByTestId("toast", undefined, { timeout: 8000 });
-      act(() => { vi.advanceTimersByTime(TOAST_MS + 500); });
+      await act(async () => {}); // let React run the banner's pending effect first: that effect is what starts the TOAST_MS timer, and it can still be queued when the banner is already on screen
+      await act(async () => { await vi.advanceTimersByTimeAsync(TOAST_MS + 500); });
       await waitFor(() => expect(screen.queryByTestId("toast")).toBeNull());
     } finally { vi.useRealTimers(); }
   }, 20000);
