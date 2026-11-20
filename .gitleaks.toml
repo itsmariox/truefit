@@ -1,0 +1,18 @@
+# Secret-scanning rules for gitleaks (run by .github/workflows/ci.yml).
+# Start from the built-in rules, then allow only the placeholder keys the tests use on purpose.
+title = "Truefit gitleaks config"
+
+[extend]
+useDefault = true
+
+[allowlist]
+description = "Obviously fake keys and tokens used by the tests"
+# Test code only. These folders hold made-up keys such as sk-ant-api03-FAKE..., sk-test-0123456789abcdefghij and 123456789:AAFake...
+paths = [
+  '''^(app|engine)/(tests|e2e)/''',
+]
+# Same idea for any other file: a value that spells out that it is fake.
+regexes = [
+  '''(?i)sk-ant-[A-Za-z0-9_-]*fake[A-Za-z0-9_-]*''',
+  '''\d{9}:AAFake[A-Za-z0-9_-]*''',
+]
