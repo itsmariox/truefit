@@ -46,7 +46,7 @@ jobs:
           fetch-depth: 0
       # Config: .gitleaks.toml (default rules plus an allowlist for the obviously fake keys in the tests).
       # Note: gitleaks-action is free for personal accounts; a repository owned by an organisation needs a GITLEAKS_LICENSE secret, which would make this job fail until added.
-      - uses: gitleaks/gitleaks-action@v2
+      - uses: gitleaks/gitleaks-action@v3
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITLEAKS_CONFIG: .gitleaks.toml
