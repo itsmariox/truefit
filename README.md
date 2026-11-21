@@ -1,23 +1,28 @@
 <div align="center">
 
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset=".github/assets/hero-dark.svg">
-  <source media="(prefers-color-scheme: light)" srcset=".github/assets/hero-light.svg">
-  <img alt="Truefit: placeholder for the main app screenshot" src=".github/assets/hero-light.svg" width="860">
-</picture>
+<img alt="Truefit: know which jobs to chase, apply with a CV that is true" src=".github/assets/banner.png" width="100%">
 
-# **Paste a job ad. Find out if it is worth your time, then get a CV that only says what is true.**
+<br>
 
-Runs on your Mac, uses the AI service you choose, asks before anything leaves.
+**Paste a job ad. Find out if it is worth your time, then get a CV that only says what is true.**<br>
+It runs on your Mac with the AI service you choose, and asks before anything leaves.
 
-[**Download for Mac**](../../releases/latest) · <sub>unsigned: macOS asks you to approve it once, [see the steps](#install-the-unsigned-dmg)</sub>
-&nbsp;&nbsp;|&nbsp;&nbsp;
-[**Read the docs**](docs/README.md)
+<br>
 
-Apple silicon Mac · free · MIT licence · needs a Claude or OpenAI account or key
+[![Download for Mac](https://img.shields.io/badge/Download_for_Mac-fafafa?style=for-the-badge&logo=apple&logoColor=0a0a0a)](../../releases/latest)&nbsp;
+[![Read the docs](https://img.shields.io/badge/Read_the_docs-2a2a28?style=for-the-badge&logo=readthedocs&logoColor=fafafa)](docs/README.md)&nbsp;
+[![Website](https://img.shields.io/badge/Website-2a2a28?style=for-the-badge&logo=vercel&logoColor=fafafa)](https://truefit-site.vercel.app)
 
-[![Licence: MIT](https://img.shields.io/badge/licence-MIT-blue.svg)](LICENSE)
-![Status: pre-release](https://img.shields.io/badge/status-pre--release-orange.svg)
+<sub>Apple silicon Mac · macOS 13 or later · unsigned, so macOS asks you to approve it once: [see the steps](#install-the-unsigned-dmg)</sub>
+
+<br>
+
+![Release](https://img.shields.io/github/v/release/itsmariox/truefit?include_prereleases&label=release&color=2a2a28)
+![Stars](https://img.shields.io/github/stars/itsmariox/truefit?color=2a2a28)
+![Licence: MIT](https://img.shields.io/badge/licence-MIT-2a2a28)
+![CI](https://img.shields.io/github/actions/workflow/status/itsmariox/truefit/ci.yml?branch=main&label=checks)
+![Status: pre-release](https://img.shields.io/badge/status-pre--release-d97757)
+![Telemetry: none](https://img.shields.io/badge/telemetry-none-2a2a28)
 
 </div>
 
@@ -27,24 +32,19 @@ Apple silicon Mac · free · MIT licence · needs a Claude or OpenAI account or 
 
 ## Paste a job. Get the truth.
 
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset=".github/assets/verdict-dark.svg">
-  <img alt="Placeholder: the verdict screen" src=".github/assets/verdict-light.svg">
-</picture>
+<img alt="The verdict screen: your rules, what fits you and where you are thin" src=".github/assets/verdict.jpg">
 
 **A straight verdict.** Apply, Long shot or Skip, with a fit score, how the ad matches your own rules, and the strengths and gaps behind it.
 
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset=".github/assets/cv-dark.svg">
-  <img alt="Placeholder: the one-page CV" src=".github/assets/cv-light.svg">
-</picture>
+<img alt="A finished one-page CV over the app" src=".github/assets/cv.jpg">
 
 **A one-page CV from facts you confirmed.** Written only from your verified profile, then checked twice before you see it.
 
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset=".github/assets/extras-dark.svg">
-  <img alt="Placeholder: extras and Telegram" src=".github/assets/extras-light.svg">
-</picture>
+<img alt="Your profile: verified facts and the ones waiting for a look" src=".github/assets/profile.jpg">
+
+**Your profile is the only source.** Only facts you tick as true are ever shown to the AI service. Anything unsure waits for your look.
+
+<img alt="Extras: cover note, interview prep, recruiter message and company brief" src=".github/assets/extras.jpg">
 
 **Extras when you want them.** A cover note, a recruiter message, interview prep and a company brief, plus optional control from your phone through your own Telegram bot.
 
