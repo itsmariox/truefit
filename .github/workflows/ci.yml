@@ -28,6 +28,9 @@ jobs:
           cache-dependency-path: |
             engine/package-lock.json
             app/package-lock.json
+      # The PDF render test needs poppler (pdftotext and friends); the hosted macOS runner does not ship it.
+      - name: Install poppler
+        run: brew install poppler
       - name: Engine tests
         working-directory: engine
         run: npm ci && npm test
