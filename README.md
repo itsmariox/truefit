@@ -108,10 +108,10 @@ Plain code runs the steps in a fixed order and checks each AI answer before usin
 
 ## Next on the list
 
-- [OWNER TO CONFIRM: roadmap item 1]
-- [OWNER TO CONFIRM: roadmap item 2]
-- [OWNER TO CONFIRM: roadmap item 3]
-- [OWNER TO CONFIRM: roadmap item 4]
+- A Windows version.
+- An official, signed and notarised Mac app, so macOS opens it without the first-launch warning.
+- Jobs found for you: matching openings to your skills, so you do not have to search.
+- Support for more countries.
 
 ## Straight answers
 
@@ -141,7 +141,7 @@ No. It is optional. If you want it, you use your own bot, and it works while the
 **Status: pre-release.** It works end to end, but it is not signed or notarised by Apple.
 
 **You need:**
-- An Apple silicon Mac. Minimum macOS version: [OWNER TO CONFIRM: minimum macOS version].
+- An Apple silicon Mac. macOS 13 or later (the minimum the app declares; it has not been tested on versions that old).
 - A Claude subscription or an Anthropic API key, or a ChatGPT plan or an OpenAI API key. Nothing else to install: the Claude program is inside the app, and OpenAI is reached directly.
 
 ### Install the unsigned DMG

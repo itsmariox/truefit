@@ -4,7 +4,7 @@
 
 Please report it privately. Do not open a public issue.
 
-Use GitHub's private vulnerability reporting: go to this repository's **Security** tab and choose **Report a vulnerability**. [OWNER TO CONFIRM: private vulnerability reporting is switched on in the repository settings.]
+Use GitHub's private vulnerability reporting: go to this repository's **Security** tab and choose **Report a vulnerability**.
 
 ## What is in scope
 
